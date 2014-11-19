@@ -164,16 +164,12 @@ module OmniAuth
           )
           _id_token = decode_id_token _access_token.id_token
 
-          the_nonce = stored_nonce
-          log :debug, "issuer: #{options.issuer} should equal #{_id_token.iss}"
-          log :debug, "nonce: #{the_nonce} should equal #{_id_token.nonce}"
-          log :debug, "exp: #{Time.now.to_i.to_s} should be less than #{_id_token.exp}"
-          log :debug, "client_id: #{client_options.identifier} #{_id_token.aud.to_s}"
+          log :debug, _id_token.to_s
 
           _id_token.verify!(
               issuer: options.issuer,
               client_id: client_options.identifier,
-              nonce: the_nonce
+              nonce: stored_nonce
           )
           _access_token
         }.call()
