@@ -180,6 +180,7 @@ module OmniAuth
       end
 
       def decode_id_token(id_token)
+        log :debug, "ID TOKEN: #{id_token}"
         ::OpenIDConnect::ResponseObject::IdToken.decode(id_token, public_key)
       end
 
