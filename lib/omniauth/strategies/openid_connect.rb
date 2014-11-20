@@ -166,6 +166,10 @@ module OmniAuth
 
           log :debug, _id_token.to_s
 
+          _id_token.raw_attributes.each_key do |key|
+            log :debug, key + ": " + _id_token.raw_attributes[key].to_s
+          end
+
           _id_token.verify!(
               issuer: options.issuer,
               client_id: client_options.identifier,
