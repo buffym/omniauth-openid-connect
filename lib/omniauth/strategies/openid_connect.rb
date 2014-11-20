@@ -170,11 +170,12 @@ module OmniAuth
             log :debug, key + ": " + _id_token.raw_attributes[key].to_s
           end
 
-          _id_token.verify!(
-              issuer: options.issuer,
-              client_id: client_options.identifier,
-              nonce: stored_nonce
-          )
+          #temp remove verify (don't do this in production!!!)
+          #_id_token.verify!(
+          #    issuer: options.issuer,
+          #    client_id: client_options.identifier,
+          #    nonce: stored_nonce
+          #)
           _access_token
         }.call()
       end
