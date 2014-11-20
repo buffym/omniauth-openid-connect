@@ -15,3 +15,11 @@ test/tmp
 test/version_tmp
 tmp
 .ruby-version
+
+.idea/.name
+
+.idea/.rakeTasks
+
+.idea/encodings.xml
+
+.idea/misc.xml

@@ -170,10 +170,14 @@ module OmniAuth
             log :debug, key + ": " + _id_token.raw_attributes[key].to_s
           end
 
+          expected_nonce = stored_nonce
+
+          log :debug, "Expected Nonce: #{expected_nonce}"
+
           _id_token.verify!(
               issuer: options.issuer,
               client_id: client_options.identifier,
-              nonce: stored_nonce
+              nonce: expected_nonce
           )
           _access_token
         }.call()
