@@ -160,7 +160,8 @@ module OmniAuth
         @access_token ||= lambda {
           _access_token = client.access_token!(
           scope: options.scope,
-          client_auth_method: options.client_auth_method
+          client_auth_method: options.client_auth_method,
+          nonce: (new_nonce if options.send_nonce)
           )
           _id_token = decode_id_token _access_token.id_token
 
@@ -174,16 +175,16 @@ module OmniAuth
 
           log :debug, "Expected Nonce: #{expected_nonce}"
 
-          _id_token.iss == options.issuer &&
-            Array(_id_token.aud).include?(client_options.identifier) or
-            raise OpenIDConnect::ResponseObject::IdToken::InvalidToken('Invalid Id Token')
+          #_id_token.iss == options.issuer &&
+          #  Array(_id_token.aud).include?(client_options.identifier) or
+          #  raise OpenIDConnect::ResponseObject::IdToken::InvalidToken('Invalid Id Token')
 
+          _id_token.verify!(
+              issuer: options.issuer,
+              client_id: client_options.identifier,
+              nonce: expected_nonce
+          )
 
-          #_id_token.verify!(
-          #    issuer: options.issuer,
-          #    client_id: client_options.identifier,
-          #    nonce: expected_nonce
-          #)
           _access_token
         }.call()
       end
