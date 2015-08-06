@@ -157,11 +157,14 @@ module OmniAuth
       end
 
       def access_token
+
+        expected_nonce = stored_nonce
+
         @access_token ||= lambda {
           _access_token = client.access_token!(
           scope: options.scope,
           client_auth_method: options.client_auth_method,
-          nonce: (new_nonce if options.send_nonce)
+          nonce: (expected_nonce if options.send_nonce)
           )
           _id_token = decode_id_token _access_token.id_token
 
@@ -170,8 +173,6 @@ module OmniAuth
           _id_token.raw_attributes.each_key do |key|
             log :debug, key + ": " + _id_token.raw_attributes[key].to_s
           end
-
-          expected_nonce = stored_nonce
 
           log :debug, "Expected Nonce: #{expected_nonce}"
 
