@@ -87,7 +87,9 @@ module OmniAuth
       def request_phase
         options.issuer = issuer if options.issuer.blank?
         discover! if options.discovery
-        redirect authorize_uri
+        auth_url = authorize_uri
+        log :info, "openid_connect: redirecting to: #{auth_url}"
+        redirect auth_url
       end
 
       def callback_phase
