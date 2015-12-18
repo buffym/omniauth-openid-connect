@@ -188,10 +188,32 @@ module OmniAuth
           #  Array(_id_token.aud).include?(client_options.identifier) or
           #  raise OpenIDConnect::ResponseObject::IdToken::InvalidToken('Invalid Id Token')
 
-          _id_token.verify!(
+          expected = {
               issuer: options.issuer,
               client_id: client_options.identifier,
               nonce: expected_nonce
+          }
+
+          log.info expected.to_s
+
+          if _id_token.exp.to_i < Time.now.to_i
+            log :info, "OpenIDConnect : Invaild Time!"
+          end
+
+          unless Array(_id_token.aud).include?(expected[:client_id])
+            log :info, "OpenIDConnect : Invalid ISSUER!"
+          end
+
+          if _id_token.nonce != expected[:nonce]
+            log :info, "OpenIDConnect : Invalid NONCE"
+          end
+
+          if _id_token.iss != expected[:issuer]
+            log :info, "Invalid Issuer"
+          end
+
+          _id_token.verify!(
+                       expected
           )
 
           _access_token
