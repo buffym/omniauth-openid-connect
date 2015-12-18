@@ -194,7 +194,7 @@ module OmniAuth
               nonce: expected_nonce
           }
 
-          log.info expected.to_s
+          log :info, expected.to_s
 
           if _id_token.exp.to_i < Time.now.to_i
             log :info, "OpenIDConnect : Invaild Time!"
