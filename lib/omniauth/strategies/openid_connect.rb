@@ -170,13 +170,13 @@ module OmniAuth
           )
           _id_token = decode_id_token _access_token.id_token
 
-          log :debug, _id_token.to_s
+          log :info, "OpenIDConnect : " + _id_token.to_s
 
           _id_token.raw_attributes.each_key do |key|
-            log :debug, key + ": " + _id_token.raw_attributes[key].to_s
+            log :info, "OpenIDConnect : " + key + ": " + _id_token.raw_attributes[key].to_s
           end
 
-          log :debug, "Expected Nonce: #{expected_nonce}"
+          log :info, "Expected Nonce: #{expected_nonce}"
 
           log :info, "OpenIDConnect Date #{_id_token.exp.to_i} : #{Time.now.to_i}"
           log :info, "OpenIDConnect Issuer: #{_id_token.iss} vs #{options.issuer}"
