@@ -209,7 +209,7 @@ module OmniAuth
           end
 
           if _id_token.iss != expected[:issuer]
-            log :info, "Invalid Issuer"
+            log :info, "Invalid Issuer \"#{_id_token.iss}\" \"#{expected[:issuer]}\""
           end
 
           _id_token.verify!(
