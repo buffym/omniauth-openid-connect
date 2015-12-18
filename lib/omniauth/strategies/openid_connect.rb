@@ -178,6 +178,10 @@ module OmniAuth
 
           log :debug, "Expected Nonce: #{expected_nonce}"
 
+          log :info, "OpenIDConnect Issuer: #{_id_token.iss} vs #{options.issuer}"
+          log :info, "OpenIDConnect Aud: #{_id_token.include?(client_options.identifier)}: #{client_options.identifier}"
+          log :info, "OpenIDConnect Nonce: #{_id_token.nonce}:#{expected_nonce}"
+
           #_id_token.iss == options.issuer &&
           #  Array(_id_token.aud).include?(client_options.identifier) or
           #  raise OpenIDConnect::ResponseObject::IdToken::InvalidToken('Invalid Id Token')
