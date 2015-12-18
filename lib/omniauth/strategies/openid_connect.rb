@@ -208,13 +208,19 @@ module OmniAuth
             log :info, "OpenIDConnect : Invalid NONCE"
           end
 
-          if _id_token.iss != expected[:issuer]
+          if _id_token.iss.strip != expected[:issuer]
             log :info, "Invalid Issuer \"#{_id_token.iss}\" \"#{expected[:issuer]}\""
           end
 
-          _id_token.verify!(
-                       expected
-          )
+          _id_token.exp.to_i > Time.now.to_i &&
+              _id_token.iss.strip == expected[:issuer] &&
+              Array(_id_token.aud).include?(expected[:client_id]) && # aud(ience) can be a string or an array of strings
+              _id_token.nonce == expected[:nonce] or
+              raise OpenIDConnect::ResponseObject::IdToken::InvalidToken.new('Invalid ID Token')
+
+          #_id_token.verify!(
+          #             expected
+          #)
 
           _access_token
         }.call()
