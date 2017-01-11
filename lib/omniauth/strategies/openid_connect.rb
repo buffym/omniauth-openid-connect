@@ -267,6 +267,8 @@ module OmniAuth
             elsif options.client_x509_signing_key
               return parse_x509_key(options.client_x509_signing_key)
             end
+          when :self_issued
+            return :self_issued
           else
         end
       end
